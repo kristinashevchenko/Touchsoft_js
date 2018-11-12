@@ -22,26 +22,16 @@ function log(a) {
  * Для вывода использовать фукнцию `log` (аналогично заданию в классе).
  * В теле функции нельзя использовать  `if`, `switch`, тернарный оператор `? :`
  */
-function str(i) {
-
-    if (i % 3 === 0) {
-        if (i % 5 === 0)
-            return "FizzBuzz";
-        else
-            return "Fizz";
-    }
-    else if (i % 5 === 0) {
-        return "Buzz";
-    }
-    else {
-        return i;
-    }
-
-}
 
 function fizzBuzz() {
     for (let i = 1; i <= 100; i++) {
-        log(str(i));
+        (i % 3 === 0)&& (i % 5 === 0)&& log("FizzBuzz");
+        (i % 3 === 0)&& (i % 5 !== 0)&& log("Fizz");
+        (i % 3 !== 0)&& (i % 5 === 0)&& log("Buzz");
+        (i % 3 !== 0)&& (i % 5 !== 0)&& log(i);
+
+
+
     }
 }
 
