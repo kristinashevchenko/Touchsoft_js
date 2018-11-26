@@ -88,11 +88,15 @@ createForm();
 
 function drawCalendar(year, month, htmlEl) {
     let box=document.getElementById("box");
-    let func=async()=>{
-        let locSt=await localStorage.getItem("box");
-        box.value=locSt;
-    };
-    func();
+
+    Promise.resolve(localStorage.getItem("box"))
+        .then((str2)=>{
+            if(str2!=null)
+        box.value=str2;
+            else
+                localStorage.setItem("box","");
+    });
+
 
     let monthes = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let month2 = month - 1;
@@ -172,17 +176,12 @@ function nextMonth(month, year, htmlEl) {
 function dateClicked(month,year,htmlEl){
     let el=event.currentTarget;
     let str=el.textContent+"."+month+"."+year+" : ";
-    console.log(str);
     str+=prompt("Please,describe date.");
-    console.log(str);
     str+="\n";
     document.getElementById("box").value+=str;
-    let func=async()=>{
-        let str2=await localStorage.getItem("box");
+    Promise.resolve(localStorage.getItem("box")).then((str2)=>{
         str2+=str;
         localStorage.setItem("box",str2);
-    };
-    func();
-
+    });
 
 }
