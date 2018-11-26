@@ -1,3 +1,4 @@
+"use strict"
 function createForm() {
     let form = document.createElement("form");
     let div1 = document.createElement("div");
