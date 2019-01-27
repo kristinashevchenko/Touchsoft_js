@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style/style.css">
+    <title>Configuration page</title>
+</head>
+<body>
+<form class="config-form" id="config-form">
+    <div class="form-group">
+        <label for="chatTitle">Chat title</label>
+        <input type="text" class="form-control-sm" id="chatTitle" placeholder="Touchsoft support">
+    </div>
+    <div class="form-group">
+        <label for="botName">Bot name</label>
+        <input type="text" class="form-control-sm" id="botName" placeholder="Bot">
+    </div>
+    <div class="form-group">
+        <label for="chatPosition">Position</label>
+        <select class="form-control-sm" id="chatPosition">
+            <option>Right</option>
+            <option>Left</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="chatCSS">CSS class</label>
+        <select class="form-control-sm" id="chatCSS">
+            <option>violet</option>
+            <option>red</option>
+            <option>green</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>UI</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="allowMinim">
+            <label class="form-check-label" for="allowMinim">
+                Allow to minimize
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="allowDrag">
+            <label class="form-check-label" for="allowDrag">
+                Allow drag
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="reqName">
+            <label class="form-check-label" for="reqName">
+                Require name
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="showDate">
+            <label class="form-check-label" for="showDate">
+                Show date/time
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Network</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <label class="form-check-label" for="inlineRadio1">fetch</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            <label class="form-check-label" for="inlineRadio2">XHR</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Updates</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="updatesRadio1" value="option1">
+            <label class="form-check-label" for="updatesRadio1">Long Polling</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="updatesRadio2" value="option2">
+            <label class="form-check-label" for="updatesRadio2">refetch</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="useCode">Use next code</label>
+        <textarea class="form-control" id="useCode" rows="17" cols="3" readonly></textarea>
+    </div>
+
+</form>
+<button type="butoon" class="btn btn-primary" id="pasteCode">Paste</button>
+<script src="config.js"></script>
+
+</body>
+</html>

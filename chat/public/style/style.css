@@ -1,0 +1,114 @@
+.chat-box {
+    position: absolute;
+    bottom: 0;
+    width: 355px;
+
+}
+
+.chat-box-left {
+    left: 0;
+}
+
+.chat-box-right {
+    right: 0;
+}
+
+.box {
+    transition: height 1s ease-out;
+    width: 350px;
+    height: 0px;
+    background: white;
+    z-index: 9999;
+}
+
+#regForm {
+    width: 35%;
+    margin-left: 30%;
+}
+
+.modalList {
+    width: 35%;
+    margin-left: 30%;
+}
+
+.img_box {
+    height: 1em;
+    margin-left: 5px;
+}
+
+.img_registr {
+    height: 1em;
+    margin-left: 5px;
+    margin-right: 5px;
+
+}
+
+.open-clicked {
+    height: 400px;
+    transition: top 1s ease-out;
+    /*transition: height 1s ease-out;*/
+}
+
+.open {
+    margin-left: 2%;
+    font-size: 1.2em;
+    border: 2px solid #3F51B5;
+    color: #eaeaea;
+}
+
+.violet {
+    background: #673AB7;
+}
+
+.red {
+    background: red;
+}
+
+.green {
+    background: green;
+}
+
+.chat_text {
+    margin-left: 2%;
+    display: inline-block;
+}
+
+.form_chat {
+
+}
+
+#inlineFormInput {
+    margin-left: 5px;
+    margin-top: 5px;
+    resize: none;
+}
+
+.messages {
+    border: 1px solid black;
+    height: 60%;
+    width: 92%;
+    margin: 1px;
+    border-radius: 5px;
+    color: black;
+    font-size: 1em;
+}
+
+.hideForm {
+    display: none;
+}
+
+.config-form {
+    height: 80%;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 2%;
+    font-size: 16px;
+}
+
+.form-input-margin {
+    margin-left: 2%;
+}
+
+.param {
+    width: 25%;
+}

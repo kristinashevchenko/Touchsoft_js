@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="style_oper.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <title>Operator page</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class=left-column>
+            <input type="email" class="form-control" id="filterUsers" placeholder="Search">
+            <div class="form-group">
+                <label for="sortUs">Sort by</label>
+                <select class="form-control" id="sortUs">
+                    <option>Name</option>
+                    <option>State</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectUsers">Users</label>
+                <select multiple class="form-control" id="selectUsers"> </select>
+            </div>
+        </div>
+        <div class="right-column hideForm">
+            <div><p id="activeUser"></p>
+                <button type="button" id="close" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="container">
+                    <div class="row">
+                        <div class="chat-column">Chat:
+                            <textarea readonly class="messages" rows="20" id="messages">
+                </textarea>
+                            <form onsubmit="return false" id="sendMessageForm">
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                            <textarea type="text" class="form-control mb-2" id="inputMessage"
+                                      placeholder="Новое сообщение пользователю" cols="30" rows="5"></textarea>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary mb-2">Send</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="control-column"><p>Control</p>
+                            <div class="form-group">
+                                <label for="operCommand">Command</label>
+                                <select class="form-control-sm" id="operCommand">
+                                    <option>Service</option>
+                                    <option>Modal</option>
+                                </select><br>
+                                <span>
+                                <select class="form-control-sm hideForm" id="servCommand">
+                                    <option>ipinfo</option>
+                                    <option>ip-api</option>
+                                    <option>geoip-db</option>
+                                </select>
+                                    </span>
+                                <span class="hideForm" id="paramCommand">
+                                <input type="text" class="form-control-sm param" id="param1" placeholder="param1">
+                                <input type="text" class="form-control-sm param" id="param2" placeholder="param2">
+                                <input type="text" class="form-control-sm param" id="param3" placeholder="param3">
+                                </span>
+                                <button type="butoon" class="btn btn-primary" id="runCode">Run</button>
+                            </div>
+                            <textarea class="form-control" id="logOper" rows="22" cols="3" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="operator.js"></script>
+</body>
+</html>
