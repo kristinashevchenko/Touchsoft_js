@@ -6,45 +6,23 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
 </head>
 <body>
-
-<!--<div class="chat-box">
-    <div class="open" >Chat<img src="images/show_chat.png"onclick="Chat.showChat()" >
-        <div class="box">
-            <textarea class="messages" readonly></textarea>
-                <form class="hideForm" onsubmit="return false">
-                    <div class="form-row align-items-center">
-                        <div class="col-auto">
-                            <textarea type="text" class="form-control mb-2" id="inlineFormInput"
-                                      placeholder="Пользовательское сообщение" cols="30" rows="5"></textarea>
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-2">Send</button>
-                        </div>
-                    </div>
-                </form>
-        </div>
-    </div>
-</div>-->
-
 <script src="socket.io/socket.io.js"></script>
-
 <script src="scripts/module.js"></script>
-<script src="scripts/longpolling.js"></script>
+<script src="scripts/refetch.js"></script>
 <script>
-    let ts=new Chat.TSChat({
-        title:"Touchsoft support",
-        botName:"Bot",
-        cssClass:"violet",
-        position:"Right",
-        allowMinimize:false,
-        allowDrag:false,
-        showDataTime:false,
-        requireName:false,
-        requests:false,
-        longpolling:true,
+    let ts = new Chat.TSChat({
+        title: "Touchsoft support",
+        botName: "Bot",
+        cssClass: "violet",
+        position: "Right",
+        allowMinimize: true,
+        allowDrag: true,
+        showDataTime: true,
+        requireName: false,
+        requests: false,
+        longpolling: false,
     });
 </script>
 </body>

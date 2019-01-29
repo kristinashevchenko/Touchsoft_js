@@ -1,7 +1,10 @@
 /**Module contains functions for longpolling*/
 var images = ["images/show_chat.png", "images/close_chat.png"];
+var wasBot;
 Chat.checkModal();
-/**Function send user messages on server*/
+
+/**Function send user messages on server
+ * @param {Boolean} showD means if it's needed to show date/time*/
 function submitForm(showD) {
     let date = new Date();
     let textarea = document.querySelectorAll("textarea").item(1);
@@ -20,6 +23,7 @@ function submitForm(showD) {
         str: str,
         bot: Chat.getBot(),
     };
+    wasBot=Chat.getBot();
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", ("http://localhost:1800/value?username" + Chat.getUser()), true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
@@ -31,14 +35,16 @@ function submitForm(showD) {
 }
 
 subscribe();
+
 /**Function send request on server and wait for changes*/
 function subscribe() {
-    let str = "http://localhost:1800/subscribe?username=" + Chat.getUser()+"&bot="+Chat.getBot();
+    let str = "http://localhost:1800/subscribe?username=" + Chat.getUser() + "&bot=" + Chat.getBot();
     var xhr = new XMLHttpRequest();
     xhr.open("GET", str, true);
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log(xhr.statusText);
+            if(wasBot===Chat.getBot())
             document.querySelector(".messages").value = JSON.parse(xhr.responseText);
             subscribe();
         }
@@ -48,6 +54,7 @@ function subscribe() {
     };
     xhr.send(null);
 }
+
 /**Registration of users and authorization*/
 function registerReq() {
     document.querySelector("#regForm").classList.add("hideForm");
@@ -63,7 +70,7 @@ function registerReq() {
     xhr.open("GET", str, true);
     xhr.onload = function () {
         if (xhr.status === 200) {
-            let user2 = JSON.parse(xhr.responseText,function(key, value) {
+            let user2 = JSON.parse(xhr.responseText, function (key, value) {
                 if (key == 'state') return new Boolean(value);
                 return value;
             });
@@ -76,7 +83,11 @@ function registerReq() {
                 Chat.setState(+user2.state);
                 Chat.checkModal();
                 document.querySelector(".chat_text").textContent = "Chat: " + user2.username;
-                document.querySelectorAll("textarea").item(0).value = user2.dialog;
+                if(Chat.getBot())
+                    document.querySelectorAll("textarea").item(0).value = user2.dialog;
+                else{
+                    document.querySelectorAll("textarea").item(0).value = user2.operator;
+                }
                 document.querySelector(".img_box").setAttribute("src", images[+user2.state]);
                 if (+user2.state === 0) {
                     document.querySelector(".form_chat").classList.add("hideForm");

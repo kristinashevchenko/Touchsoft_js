@@ -2,40 +2,46 @@
 /**This module contains main function of chat*/
 const Chat = (function () {
     var images = ["images/show_chat.png", "images/close_chat.png"];
-
     var state = 0, user = "Anonym";
     var socket = io("http://localhost:1800/");
     var obj = {};
     var showD;
     var reqF;
-    var commands = [];
     var bot = true;
+    let windowId = +(new Date()).getTime();
     return {
-        /**This is @constructor for chat*/
+        /**Creates chat
+         * @param {Object} obj configuration object*/
         TSChat: function (obj) {
             startFunc(obj);
         },
-        /**Returns user*/
+        /**Returns user
+         * @returns {String} user*/
         getUser: function () {
             return user;
         },
-        /**Set user*/
+        /**Set user
+         * @param {String} us username*/
         setUser: function (us) {
             user = us;
         },
-        /**Set state*/
+        /**Set state
+         * @param {Number} st state*/
         setState: function (st) {
             state = st;
         },
-        /**Returns state*/
+        /**Returns state
+         * @returns {Number} state*/
         getState: function () {
             return state;
         },
-        /**Returns bot*/
+        /**Returns bot
+         * @returns {Boolean} bot*/
         getBot: function () {
             return bot;
         },
-        /**Returns true if bot name required*/
+        /**Returns true if bot name required
+         * @returns {Boolean} if bot name required*/
         getRequireName: function () {
             return obj.requireName;
         },
@@ -53,9 +59,16 @@ const Chat = (function () {
                 }
             });
         },
+        /**Returns id of window
+         * @returns {Number} windowId*/
+        getWindowId: function () {
+            return windowId;
+        },
     }
 
-    /**Start function, which create DOM-model of chat*/
+    /**Start function, which create DOM-model of chat
+     * @param {Object} obj2 contains:
+     * title,botName,cssClass,position,allowMinimize,allowDrag,showDataTime,requireName,requests */
     function startFunc(obj2) {
         for (var key in obj2) {
             obj[key] = obj2[key];
@@ -225,12 +238,14 @@ const Chat = (function () {
             }
         });
         socket.on("new message operator", function (data) {
-            if(!bot&&user===data.username)
-            document.querySelector(".messages").value += data.str;
+            if (!bot && user === data.username)
+                document.querySelector(".messages").value += data.str;
         });
     }
 
-    /**Make request for user ip and sends it on server*/
+    /**Make request for user ip and sends it on server
+     * @param {Object} data command object:
+     * params,id2,name,date,done*/
     function createServiceReq(data) {
         let str;
         switch (data.params[0]) {
@@ -263,7 +278,9 @@ const Chat = (function () {
         });
     }
 
-    /**Create modal dialog*/
+    /**Create modal dialog
+     * @param {Object} data we get this data from server,contains params:
+     * name of dialog,input,placeholder*/
     function createModalDialog(data) {
         let div3, div4, div5, div6;
 
@@ -321,7 +338,8 @@ const Chat = (function () {
         document.body.appendChild(div3);
     }
 
-    /**Show histrory messages*/
+    /**Show histrory messages
+     * @param {Object} event*/
     function showUsers(ev) {
         ev.preventDefault();
         ev.stopPropagation();
@@ -358,7 +376,8 @@ const Chat = (function () {
         });
     }
 
-    /**Send configuration parametres on server*/
+    /**Send configuration parametres on server
+     * @returns {Object} promise*/
     function initConfig() {
         const json = JSON.stringify({
             botName: obj.botName,
@@ -394,7 +413,9 @@ const Chat = (function () {
         document.querySelector("#regForm").classList.remove("hideForm");
     }
 
-    /**Check state of chat*/
+    /**Check state of chat
+     * @param {Number=} param state, which send to server
+     * @returns {Object} promise*/
     function checkState(param) {
         let str = "http://localhost:1800/state";
         str += "?username=" + user;
@@ -404,19 +425,23 @@ const Chat = (function () {
         return getXmlRequest(str);
     }
 
-    /**Check users's commangs*/
+    /**Check users's commangs
+     * @returns {Object} promise*/
     function checkCommand() {
         let str = "http://localhost:1800/command?username=" + user;
         return getXmlRequest(str);
     }
 
-    /**Check messages of user*/
+    /**Check messages of user
+     * @returns {Object} promise*/
     function checkStr() {
         let str = "http://localhost:1800/value?username=" + user + "&bot=true";
         return getXmlRequest(str);
     }
 
-    /**Template for get-request*/
+    /**Template for get-request
+     * @param {String} str url
+     * @returns {Object} promise*/
     function getXmlRequest(str) {
         return new Promise((resolve, reject) => {
             var xhr = new XMLHttpRequest();
@@ -449,9 +474,6 @@ const Chat = (function () {
         sign_close.setAttribute("class", "close");
         sign_close.setAttribute("data-dismiss", "modal");
         sign_close.setAttribute("aria-label", "Close");
-
-        let span = document.createElement("span");
-        span.setAttribute("aria-hidden", true);
 
         div5 = document.createElement("div");
         div5.className = "modal-body";
@@ -512,7 +534,6 @@ const Chat = (function () {
         button_ok.textContent = "OK";
         button_ok.addEventListener("click", registerReq);
 
-        sign_close.appendChild(span);
         div4.appendChild(h5);
         div4.appendChild(sign_close);
         div6.appendChild(button_close);

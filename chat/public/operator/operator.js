@@ -4,12 +4,13 @@ const Operator = (function () {
     let users = [];
     let user;
     checkUsers();
-    /**Catching new users*/
+    /**Catching new users
+     * @param {Object} user2 add to list of users,if he wasn't added*/
     socket.on("new user", function (user2) {
         let list = document.querySelector("#selectUsers");
         let exist = false;
         for (let i = 0; i < list.length; i++) {
-            if (list[i] === user2.username) {
+            if (list[i].value === user2.username) {
                 exist = true;
             }
         }
@@ -20,15 +21,18 @@ const Operator = (function () {
             list.appendChild(option);
         }
     });
-    /**Catching new messages from users*/
+    /**Catching new messages from users
+     * @param {Object} data contains:
+     * username,message(str)*/
     socket.on("new message user", function (data) {
-        console.log("here",data.username);
         if (data.username === user) {
             document.getElementById("messages").value += data.str;
         }
 
     });
-    /**Catching new commands*/
+    /**Catching new commands
+     * @param {Object} data contains:
+     * username,command result(str)*/
     socket.on("new command user", function (data) {
         if (data.username === user)
             document.getElementById("logOper").value += data.str;
@@ -114,6 +118,7 @@ const Operator = (function () {
         document.getElementById("activeUser").textContent = "Active: " + document.getElementById("selectUsers").value;
     }
 
+    /**Show command params according to selected*/
     function showParams() {
         if (document.getElementById("operCommand").value === "Modal") {
             document.getElementById("paramCommand").classList.remove("hideForm");
@@ -180,27 +185,6 @@ const Operator = (function () {
         socket.emit("message operator", obj);
     }
 
-    // subscribe();
-    //
-    // function subscribe() {
-    //     let str = "http://localhost:1800/subscribe?username=" + user+"&bot=false";
-    //     console.log(str);
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open("GET", str, true);
-    //     xhr.onload = function () {
-    //         if (xhr.status === 200) {
-    //             console.log(xhr.statusText);
-    //             document.querySelector(".messages").value = JSON.parse(xhr.responseText);
-    //             subscribe();
-    //         }
-    //         else {
-    //             setTimeout(subscribe, 500);
-    //         }
-    //     };
-    //
-    //     xhr.send(null);
-    // }
-
     /**Function send message from operator on server*/
     function submitForm() {
         let date = new Date();
@@ -214,26 +198,4 @@ const Operator = (function () {
         socket.emit("message operator", obj);
         textarea.value = "";
     }
-
-    // function submitForm() {
-    //     let date = new Date();
-    //     let textarea = document.getElementById("inputMessage");
-    //     let str = date.getHours() + ":" + date.getMinutes() + " Operator: " + textarea.value + "\n";
-    //     document.getElementById("messages").value += str;
-    //     const obj = {
-    //         username: user,
-    //         str: str,
-    //         operator:true,
-    //         bot:false,
-    //     };
-    //     const xmlhttp = new XMLHttpRequest();
-    //     xmlhttp.open("POST", ("http://localhost:1800/value?username" + user), true);
-    //     xmlhttp.setRequestHeader("Content-Type", "application/json");
-    //     xmlhttp.onload = function () {
-    //         console.log(xmlhttp.responseText);
-    //     };
-    //     xmlhttp.send(JSON.stringify(obj));
-    //     textarea.value = "";
-    //
-    // }
 })()
