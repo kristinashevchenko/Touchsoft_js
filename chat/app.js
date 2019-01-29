@@ -1,9 +1,8 @@
 const express = require("express");
 const app = express();
-let http = require("http").Server(app);
 const bodyParser = require("body-parser");
 
-let io = require("socket.io")(http);
+let io = require("socket.io").listen(app.listen(1800));
 const User = require("./models/user_m.js");
 let config = {
     botName: "Bot",
@@ -17,6 +16,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.post("/config", (req, res) => {
     config.botName = req.body.botName === undefined ? "Bot" : req.body.botName;
     config.showDataTime = req.body.showDataTime === undefined ? true : req.body.showDataTime;
+    res.status(200).end();
 });
 
 app.get("/state", (req, res) => {
@@ -37,7 +37,7 @@ app.get("/state", (req, res) => {
     makeRequest();
 });
 app.get("/value", (req, res) => {
-    chat.subscribe(req, res);
+    //chat.subscribe(req, res);
     const makeRequest = async () => {
         let obj = await User.findState(req.query.username);
         if (req.query.bot)
@@ -113,12 +113,14 @@ app.get("/authorize", (req, res) => {
         if (users.length === 0) {
             User.addUser(userA);
             user.dialog = "";
+            user.operator="";
             res.send(JSON.stringify(user));
             res.status(200).end();
         } else {
             const user3 = await User.comparePass(userA, users[0]);
             if (user3 && users[0].username) {
                 user.dialog = users[0].dialog;
+                user.operator=users[0].operator;
                 user.state = users[0].state;
                 res.send(JSON.stringify(user));
                 res.status(200).end();
@@ -161,10 +163,6 @@ app.post("/value", (req, res) => {
     makeRequest();
 });
 
-http.listen("1800", () => {
-    console.log("Server is running");
-});
-
 io.on("connection", function (socket) {
     console.log("connected");
     socket.on("message", function (data2) {
@@ -177,17 +175,16 @@ io.on("connection", function (socket) {
             else {
                 str = " " + config.botName + ": Ответ на " + data2.value.toUpperCase() + "\n";
             }
-            let objS={
-                username:data2.username,
-                str:data2.str,
+            let objS = {
+                username: data2.username,
+                str: data2.str,
             };
-            io.emit("new message", objS);
             const makeRequest = async () => {
                 let obj = await User.findState(data2.username);
                 obj.dialog += data2.str;
                 obj.dialog += str;
                 User.updateDialog(data2.username, obj.dialog);
-                objS.str=str;
+                objS.str = str;
                 io.emit("new message", objS);
             };
             makeRequest();
@@ -210,14 +207,12 @@ io.on("connection", function (socket) {
                     }
                     str += (") - " + obj.command[i].result + "\n");
                     User.updateCommand(data2.username, obj.command);
-                    io.emit("new command user", {str:str,username:data2.username});
+                    io.emit("new command user", {str: str, username: data2.username});
                 } else {
                     obj.operator += data2.str;
                     User.updateOperatorDialog(data2.username, obj.operator);
-                    let obj2={str:data2.str,username:data2.username};
-                    console.log(obj2);
-                    io.emit("new message user",obj2 );
-                    io.emit("new message", obj2);
+                    let obj2 = {str: data2.str, username: data2.username};
+                    io.emit("new message user", obj2);
                 }
             };
             makeRequest();
@@ -241,7 +236,7 @@ io.on("connection", function (socket) {
             } else {
                 obj.operator += data2.str;
                 User.updateOperatorDialog(data2.username, obj.operator);
-                io.emit("new message operator", {str:data2.str,username:data2.username});
+                io.emit("new message operator", {str: data2.str, username: data2.username});
             }
         }
 
@@ -256,15 +251,20 @@ io.on("connection", function (socket) {
             if (users.length === 0) {
                 User.addUser(userA);
                 user.dialog = "";
+                user.operator="";
+                user.windowId = objUser.windowId;
                 io.emit("new user", user);
             } else {
                 const user3 = await User.comparePass(userA, users[0]);
                 if (user3 && users[0].username) {
                     user.dialog = users[0].dialog;
                     user.state = users[0].state;
+                    user.operator=users[0].operator;
+                    user.windowId = objUser.windowId;
                     io.emit("new user", user);
                 } else {
                     const uuser = await User.findState("Anonym");
+                    uuser.windowId = objUser.windowId;
                     io.emit("new user", uuser);
                 }
             }
